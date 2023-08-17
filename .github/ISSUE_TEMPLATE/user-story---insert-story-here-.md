@@ -1,7 +1,7 @@
 ---
 name: 'USER STORY: [Insert story here]'
 about: This is our default user story
-title: ''
+title: 'USER STORY: <TITLE>'
 labels: ''
 assignees: ''
 
