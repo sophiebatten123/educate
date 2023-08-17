@@ -1,6 +1,6 @@
 <template>
     <div>
-        this is index page
+        this is index page SOPHIE WAS HERE
     </div>
     <div>{{message}}</div>
 </template>
