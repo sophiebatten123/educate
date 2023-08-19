@@ -18,6 +18,9 @@
         <button class="rounded-full w-12 h-12 border-2 border-black h-20 mx-4" @click="toggleImage" :class="image ? 'bg-yellow-400' : ''">
             <p><font-awesome-icon :icon="['fas', 'image']" /></p>
         </button>
+        <button class="rounded-full w-12 h-12 border-2 border-black h-20" @click="toggleText" :class="text ? 'bg-yellow-400' : ''">
+            <p><font-awesome-icon :icon="['fas', 'font']" /></p>
+        </button>
     </div>
     <div class="flex">
         <div class="flex-grow">
@@ -45,6 +48,7 @@ export default {
       square: false,
       circle: false,
       image: false,
+      text: false,
       canvasWidth: 1000,
       canvasHeight: 1000,
       canvas: null,
@@ -70,12 +74,45 @@ export default {
       this.square = false;
       this.canvas.isDrawingMode = this.pencil;
     },
-    toggleImage() {
-      this.image = !this.image;
+    toggleText() {
+      if (!this.text) {
+        this.createText();
+        this.text = true;
+
+        setTimeout(() => {
+          this.text = false;
+        }, 1000); // Toggle back after 1 second
+      }
       this.pencil = false;
       this.eraser = false;
       this.square = false;
       this.canvas.isDrawingMode = false;
+    },
+    createText() {
+      const textBox = new fabric.Textbox("Enter Text Here", {
+        left: 20,
+        top: 20,
+        fill: "black",
+        stroke: "black",
+        strokeWidth: 2
+      })
+      this.canvas.add(textBox);
+    },
+    toggleImage() {
+      if (!this.image) {
+        this.createImage();
+        this.image = true;
+
+        setTimeout(() => {
+          this.image = false;
+        }, 1000); // Toggle back after 1 second
+      }
+      this.pencil = false;
+      this.eraser = false;
+      this.square = false;
+      this.canvas.isDrawingMode = false;
+    },
+    createImage() {
       new fabric.Image.fromURL(this.myImage, (_img)=>{
         const _daisy = _img.set({left:0, top:0, width: _img.width, height: _img.height})
         this.canvas.add(_daisy)
