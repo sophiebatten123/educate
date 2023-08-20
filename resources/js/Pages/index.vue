@@ -17,23 +17,28 @@
             <!-- <button class="rounded-full border-2 border-black w-12 h-12 h-20 mx-4" @click="toggleEraser" :class="eraser ? 'bg-yellow-400' : ''">
                 <p><font-awesome-icon :icon="['fas', 'eraser']" /></p>
             </button> -->
-            <button class="rounded-full w-12 h-12 border-2 border-black mx-4" @click="toggleSquare" :class="square ? 'bg-yellow-400' : ''">
+            <button class="rounded-full w-12 h-12 border-2 border-black mx-4" @click="toggleSquare" :class="square ? 'bg-gray-800 text-white' : ''">
                 <p><font-awesome-icon :icon="['fas', 'square']" /></p>
             </button>
-            <button class="rounded-full w-12 h-12 border-2 border-black" @click="toggleCircle" :class="circle ? 'bg-yellow-400' : ''">
+            <button class="rounded-full w-12 h-12 border-2 border-black" @click="toggleCircle" :class="circle ? 'bg-gray-800 text-white' : ''">
                 <p><font-awesome-icon :icon="['fas', 'circle']" /></p>
             </button>
-            <button class="rounded-full w-12 h-12 border-2 border-black mx-4" @click="toggleImage" :class="image ? 'bg-yellow-400' : ''">
+            <button class="rounded-full w-12 h-12 border-2 border-black mx-4" @click="toggleImage" :class="image ? 'bg-gray-800 text-white' : ''">
                 <p><font-awesome-icon :icon="['fas', 'image']" /></p>
             </button>
-            <button class="rounded-full w-12 h-12 border-2 border-black" @click="toggleText" :class="text ? 'bg-yellow-400' : ''">
+            <button class="rounded-full w-12 h-12 border-2 border-black" @click="toggleText" :class="text ? 'bg-gray-800 text-white' : ''">
                 <p><font-awesome-icon :icon="['fas', 'font']" /></p>
             </button>
-            <button class="rounded-full w-12 h-12 border-2 border-black mx-4" @click="togglePolygon" :class="polygon ? 'bg-yellow-400' : ''">
+            <button class="rounded-full w-12 h-12 border-2 border-black mx-4" @click="togglePolygon" :class="polygon ? 'bg-gray-800 text-white' : ''">
                 <p><font-awesome-icon :icon="['fas', 'draw-polygon']" /></p>
             </button>
-            <button class="rounded-full w-12 h-12 border-2 border-black" @click="toggleLine" :class="line ? 'bg-yellow-400' : ''">
+            <button class="rounded-full w-12 h-12 border-2 border-black" @click="toggleLine" :class="line ? 'bg-gray-800 text-white' : ''">
                 <p><font-awesome-icon :icon="['fas', 'lines-leaning']" /></p>
+            </button>
+          </div>
+          <div class="flex justify-center mt-4">
+            <button class="rounded-full w-12 h-12 border-2 border-black mx-4" @click="toggleBin" :class="bin ? 'bg-gray-800 text-white' : ''">
+                <p><font-awesome-icon :icon="['fas', 'trash']" /></p>
             </button>
           </div>
           <div class="flex mt-8 justify-center">
@@ -70,6 +75,7 @@ export default {
       image: false,
       line: false,
       text: false,
+      bin: false,
       polygon: false,
       canvasWidth: 0,
       canvasHeight: 0,
@@ -90,7 +96,7 @@ export default {
 
       // Set the canvas dimensions
       this.canvasWidth = colSpan2Width;
-      this.canvasHeight = 550; // Set your desired canvas height here
+      this.canvasHeight = 600; // Set your desired canvas height here
 
       canvas = new fabric.Canvas(this.$refs.canvasRef, {
         isDrawingMode: true,
@@ -150,7 +156,7 @@ export default {
 
         setTimeout(() => {
           this.text = false;
-            }, 1000); // Toggle back after 1 second
+            }, 500); // Toggle back after 1 second
           }
           this.pencil = false;
           this.eraser = false;
@@ -164,7 +170,7 @@ export default {
 
         setTimeout(() => {
           this.polygon = false;
-        }, 1000); // Toggle back after 1 second
+        }, 500); // Toggle back after 1 second
       }
       this.pencil = false;
       this.eraser = false;
@@ -196,6 +202,23 @@ export default {
 
       canvas.add(pentagon);
     },
+    toggleBin() {
+      if (!this.bin) {
+        this.clearCanvas();
+        this.bin = true;
+
+        setTimeout(() => {
+          this.bin = false;
+        }, 500); // Toggle back after 1 second
+      }
+      this.pencil = false;
+      this.eraser = false;
+      this.square = false;
+      canvas.isDrawingMode = false;
+    },
+    clearCanvas() {
+      canvas.clear()
+    },
     createText() {
       const textBox = new fabric.Textbox("Enter Text Here", {
         left: 20,
@@ -218,7 +241,7 @@ export default {
 
         setTimeout(() => {
           this.line = false;
-        }, 1000); // Toggle back after 1 second
+        }, 500); // Toggle back after 1 second
       }
       this.pencil = false;
       this.eraser = false;
@@ -241,7 +264,7 @@ export default {
 
         setTimeout(() => {
           this.image = false;
-        }, 1000); // Toggle back after 1 second
+        }, 500); // Toggle back after 1 second
       }
       this.pencil = false;
       this.eraser = false;
@@ -267,7 +290,7 @@ export default {
 
         setTimeout(() => {
           this.square = false;
-        }, 1000); // Toggle back after 1 second
+        }, 500); // Toggle back after 1 second
       }
       this.pencil = false;
       this.eraser = false;
@@ -295,7 +318,7 @@ export default {
 
         setTimeout(() => {
           this.circle = false;
-        }, 1000); // Toggle back after 1 second
+        }, 500); // Toggle back after 1 second
       }
       this.pencil = false;
       this.eraser = false;
