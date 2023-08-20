@@ -1,33 +1,48 @@
 <template>
-    <div class="font-bold underline text-3xl bg-blue-200">
-        <p class="font-bold underline text-blue-900 mb-4">Educate Whiteboard</p>
+    <div class="font-bold underline text-3xl">
+        <p class="font-bold underline text-blue-900 my-4 ml-2">Educate Whiteboard</p>
     </div>
-    <div class="flex">
-        <button class="rounded-full w-12 h-12 border-2 border-black h-20" @click="togglePencil" :class="pencil ? 'bg-yellow-400' : ''">
-            <p><font-awesome-icon :icon="['fas', 'pencil']" /></p>
-        </button>
-        <!-- <button class="rounded-full border-2 border-black w-12 h-12 h-20 mx-4" @click="toggleEraser" :class="eraser ? 'bg-yellow-400' : ''">
-            <p><font-awesome-icon :icon="['fas', 'eraser']" /></p>
-        </button> -->
-        <button class="rounded-full w-12 h-12 border-2 border-black h-20 mx-4" @click="toggleSquare" :class="square ? 'bg-yellow-400' : ''">
-            <p><font-awesome-icon :icon="['fas', 'square']" /></p>
-        </button>
-        <button class="rounded-full w-12 h-12 border-2 border-black h-20" @click="toggleCircle" :class="circle ? 'bg-yellow-400' : ''">
-            <p><font-awesome-icon :icon="['fas', 'circle']" /></p>
-        </button>
-        <button class="rounded-full w-12 h-12 border-2 border-black h-20 mx-4" @click="toggleImage" :class="image ? 'bg-yellow-400' : ''">
-            <p><font-awesome-icon :icon="['fas', 'image']" /></p>
-        </button>
-        <button class="rounded-full w-12 h-12 border-2 border-black h-20" @click="toggleText" :class="text ? 'bg-yellow-400' : ''">
-            <p><font-awesome-icon :icon="['fas', 'font']" /></p>
-        </button>
-    </div>
-    <div class="flex">
-        <div class="flex-grow">
-             <div class="bg-red-200" style="height: 300px;">Tutor Camera</div>
-             <div class="bg-green-200" style="height: 300px;">Student Camera</div>
+    <div class="grid-cols-3 grid">
+        <div class="w-full col-span-2 canvasContainer" ref="canvasContainer">
+          <canvas ref="canvasRef" class="border-2 border-black"></canvas>
         </div>
-        <canvas ref="canvasRef" :width="canvasWidth" :height="canvasHeight" class="border-2 border-black"></canvas>
+      <div>
+        <div class="border-y-2 border-r-2 border-black w-full" style="height: 300px;">
+            <div class="border-l-2 border-b-2 border-black w-1/3 float-right" style="height: 100px;"></div>
+          </div>
+          <div class="flex justify-center mt-4">
+            <button class="rounded-full w-12 h-12 border-2 border-black" @click="togglePencil" :class="pencil && pencilBlack ? 'bg-gray-800 text-white' : pencil && pencilGreen ? 'bg-green-400' : pencil && pencilRed ? 'bg-red-400' : pencil && pencilBlue ? 'bg-blue-400' : ''">
+                <p><font-awesome-icon :icon="['fas', 'pencil']" /></p>
+            </button>
+            <!-- <button class="rounded-full border-2 border-black w-12 h-12 h-20 mx-4" @click="toggleEraser" :class="eraser ? 'bg-yellow-400' : ''">
+                <p><font-awesome-icon :icon="['fas', 'eraser']" /></p>
+            </button> -->
+            <button class="rounded-full w-12 h-12 border-2 border-black mx-4" @click="toggleSquare" :class="square ? 'bg-yellow-400' : ''">
+                <p><font-awesome-icon :icon="['fas', 'square']" /></p>
+            </button>
+            <button class="rounded-full w-12 h-12 border-2 border-black" @click="toggleCircle" :class="circle ? 'bg-yellow-400' : ''">
+                <p><font-awesome-icon :icon="['fas', 'circle']" /></p>
+            </button>
+            <button class="rounded-full w-12 h-12 border-2 border-black mx-4" @click="toggleImage" :class="image ? 'bg-yellow-400' : ''">
+                <p><font-awesome-icon :icon="['fas', 'image']" /></p>
+            </button>
+            <button class="rounded-full w-12 h-12 border-2 border-black" @click="toggleText" :class="text ? 'bg-yellow-400' : ''">
+                <p><font-awesome-icon :icon="['fas', 'font']" /></p>
+            </button>
+            <button class="rounded-full w-12 h-12 border-2 border-black mx-4" @click="togglePolygon" :class="polygon ? 'bg-yellow-400' : ''">
+                <p><font-awesome-icon :icon="['fas', 'draw-polygon']" /></p>
+            </button>
+            <button class="rounded-full w-12 h-12 border-2 border-black" @click="toggleLine" :class="line ? 'bg-yellow-400' : ''">
+                <p><font-awesome-icon :icon="['fas', 'lines-leaning']" /></p>
+            </button>
+          </div>
+          <div class="flex mt-8 justify-center">
+            <button class="bg-gray-800 h-4 w-4 border-2 border-black" @click="textBlack"></button>
+            <button class="bg-blue-300 h-4 w-4 border-2 border-black mx-4" @click="textBlue"></button>
+            <button class="bg-red-300 h-4 w-4 border-2 border-black" @click="textRed"></button>
+            <button class="bg-green-300 h-4 w-4 border-2 border-black mx-4" @click="textGreen"></button>
+          </div>
+        </div>
     </div>
 </template>
 
@@ -39,19 +54,26 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 
 // Add the solid (fas) icons to the library
 library.add(fas);
+var canvas = null;
 
 export default {
   data() {
     return {
       pencil: true,
+      pencilBlack: true,
+      pencilRed: false,
+      pencilGreen: false,
+      pencilBlue: false,
       eraser: false,
       square: false,
       circle: false,
       image: false,
+      line: false,
       text: false,
-      canvasWidth: 1000,
-      canvasHeight: 1000,
-      canvas: null,
+      polygon: false,
+      canvasWidth: 0,
+      canvasHeight: 0,
+      // canvas: null,
       myImage: "https://cdn-icons-png.flaticon.com/256/5264/5264272.png"
     }
   },
@@ -63,30 +85,116 @@ export default {
   },
   methods: {
     initializeCanvas() {
-      this.canvas = new fabric.Canvas(this.$refs.canvasRef, {
+      // Get the width of the col-span-2 element
+      const colSpan2Width = this.$refs.canvasContainer.offsetWidth; // Assumes "canvasContainer" is the class of the parent div
+
+      // Set the canvas dimensions
+      this.canvasWidth = colSpan2Width;
+      this.canvasHeight = 550; // Set your desired canvas height here
+
+      canvas = new fabric.Canvas(this.$refs.canvasRef, {
         isDrawingMode: true,
+        width: this.canvasWidth,
+        height: this.canvasHeight
       });
-      window.addEventListener('keydown', this.handleKeyDown);
+      // window.addEventListener('keydown', this.handleKeyDown);
     },
     togglePencil() {
       this.pencil = !this.pencil;
       this.eraser = false;
       this.square = false;
-      this.canvas.isDrawingMode = this.pencil;
+      canvas.isDrawingMode = this.pencil;
+    },
+    textBlack() {
+      if (canvas) {
+        canvas.freeDrawingBrush.color = 'black';
+        this.pencilBlack = !this.pencilBlack;
+        this.pencilBlue = false;
+        this.pencilGreen = false;
+        this.pencilRed = false;
+      }
+    },
+    textBlue() {
+      if (canvas) {
+        canvas.freeDrawingBrush.color = 'blue';
+        this.pencilBlue = !this.pencilBlue
+        this.pencilBlack = false;
+        this.pencilGreen = false;
+        this.pencilRed = false;
+      }
+    },
+    textRed() {
+      if (canvas) {
+        canvas.freeDrawingBrush.color = 'red';
+        this.pencilRed = !this.pencilRed
+        this.pencilBlue = false;
+        this.pencilGreen = false;
+        this.pencilBlack = false;
+      }
+    },
+    textGreen() {
+      if (canvas) {
+        canvas.freeDrawingBrush.color = 'green';
+        this.pencilGreen = !this.pencilGreen
+        this.pencilBlue = false;
+        this.pencilBlack = false;
+        this.pencilRed = false;
+      }
     },
     toggleText() {
       if (!this.text) {
-        this.createText();
+        const textBox = this.createText();
+        canvas.setActiveObject(textBox); // Activate the text box
+        canvas.renderAll(); // Render the canvas to reflect changes
         this.text = true;
 
         setTimeout(() => {
           this.text = false;
+            }, 1000); // Toggle back after 1 second
+          }
+          this.pencil = false;
+          this.eraser = false;
+          this.square = false;
+          canvas.isDrawingMode = false;
+    },
+    togglePolygon() {
+      if (!this.polygon) {
+        this.createPolygon();
+        this.polygon = true;
+
+        setTimeout(() => {
+          this.polygon = false;
         }, 1000); // Toggle back after 1 second
       }
       this.pencil = false;
       this.eraser = false;
       this.square = false;
-      this.canvas.isDrawingMode = false;
+      canvas.isDrawingMode = false;
+    },
+    createPolygon() {
+      const centerX = 150;
+      const centerY = 150;
+      const radius = 100;
+      const sides = 5;
+
+      const points = [];
+
+      for (let i = 0; i < sides; i++) {
+        const angle = (i * 2 * Math.PI) / sides;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        points.push({ x, y });
+      }
+
+      const pentagon = new fabric.Polygon(points, {
+        left: 0,
+        top: 0,
+        fill: "yellow",
+        stroke: "black",
+        strokeWidth: 2
+      });
+
+      canvas.add(pentagon);
     },
     createText() {
       const textBox = new fabric.Textbox("Enter Text Here", {
@@ -94,9 +202,37 @@ export default {
         top: 20,
         fill: "black",
         stroke: "black",
-        strokeWidth: 2
-      })
-      this.canvas.add(textBox);
+        strokeWidth: 2,
+        width: 400, // Set the width to a specific value
+        breakWords: false,
+        fontFamily: "Poppins", // Set the desired font family
+        fontSize: 28,
+      });
+      canvas.add(textBox);
+      return textBox; // Return the created text box
+    },
+    toggleLine() {
+      if (!this.line) {
+        this.createLine();
+        this.line = true;
+
+        setTimeout(() => {
+          this.line = false;
+        }, 1000); // Toggle back after 1 second
+      }
+      this.pencil = false;
+      this.eraser = false;
+      this.square = false;
+      canvas.isDrawingMode = false;
+    },
+    createLine() {
+      const line = new fabric.Line([50, 50, 200, 200], {
+        fill: "black", // Fill color of the line (not applicable for lines)
+        stroke: "blue", // Stroke color of the line
+        strokeWidth: 2 // Stroke width of the line
+      });
+
+      canvas.add(line);
     },
     toggleImage() {
       if (!this.image) {
@@ -110,12 +246,12 @@ export default {
       this.pencil = false;
       this.eraser = false;
       this.square = false;
-      this.canvas.isDrawingMode = false;
+      canvas.isDrawingMode = false;
     },
     createImage() {
       new fabric.Image.fromURL(this.myImage, (_img)=>{
         const _daisy = _img.set({left:0, top:0, width: _img.width, height: _img.height})
-        this.canvas.add(_daisy)
+        canvas.add(_daisy)
       })
     },
     // toggleEraser() {
@@ -138,18 +274,19 @@ export default {
       this.circle = false;
     },
     createSquare() {
-      this.canvas.isDrawingMode = false;
+      canvas.isDrawingMode = false;
 
       const rect = new fabric.Rect({
         top: 50,
         left: 50,
         height: 100,
         width: 100,
-        selectable: true, // Make the rectangle selectable
+        selectable: true,
+        fill: "blue", // Make the rectangle selectable
       });
 
-      this.canvas.add(rect);
-      this.canvas.setActiveObject(rect);
+      canvas.add(rect);
+      canvas.setActiveObject(rect);
     },
     toggleCircle() {
       if (!this.circle) {
@@ -165,7 +302,7 @@ export default {
       this.square = false;
     },
     createCircle() {
-      this.canvas.isDrawingMode = false;
+      canvas.isDrawingMode = false;
 
       const circle = new fabric.Circle({
         top: 50,
@@ -175,23 +312,23 @@ export default {
         selectable: true, // Make the circle selectable
       });
 
-      this.canvas.add(circle);
-      this.canvas.setActiveObject(circle);
+      canvas.add(circle);
+      canvas.setActiveObject(circle);
     },
-    handleKeyDown(event) {
-      if (event.keyCode === 8) { // Backspace key
-        const activeObject = this.canvas.getActiveObject();
-        if (activeObject) {
-          this.canvas.remove(activeObject);
-          this.canvas.discardActiveObject();
-          this.canvas.renderAll();
-        }
-      }
-    },
+    // handleKeyDown(event) {
+    //   if (event.keyCode === 8) { // Backspace key
+    //     const activeObject = canvas.getActiveObject();
+    //     if (activeObject) {
+    //       canvas.remove(activeObject);
+    //       canvas.discardActiveObject();
+    //       canvas.renderAll();
+    //     }
+    //   }
+    // },
   },
-  beforeDestroy() {
-    // Clean up the keydown event listener when the component is destroyed
-    window.removeEventListener('keydown', this.handleKeyDown);
-  },
+  // beforeDestroy() {
+  //   // Clean up the keydown event listener when the component is destroyed
+  //   window.removeEventListener('keydown', this.handleKeyDown);
+  // },
 };
 </script>
