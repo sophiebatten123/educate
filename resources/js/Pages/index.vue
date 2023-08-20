@@ -37,6 +37,9 @@
             </button>
           </div>
           <div class="flex justify-center mt-4">
+            <button class="rounded-full w-12 h-12 border-2 border-black mx-4" @click="toggleHighlight" :class="highlight ? 'bg-gray-800 text-white' : ''">
+                <p><font-awesome-icon :icon="['fas', 'paintbrush']" /></p>
+            </button>
             <button class="rounded-full w-12 h-12 border-2 border-black mx-4" @click="toggleBin" :class="bin ? 'bg-gray-800 text-white' : ''">
                 <p><font-awesome-icon :icon="['fas', 'trash']" /></p>
             </button>
@@ -76,6 +79,7 @@ export default {
       line: false,
       text: false,
       bin: false,
+      highlight: false,
       polygon: false,
       canvasWidth: 0,
       canvasHeight: 0,
@@ -107,6 +111,22 @@ export default {
     },
     togglePencil() {
       this.pencil = !this.pencil;
+      this.eraser = false;
+      this.square = false;
+      canvas.isDrawingMode = this.pencil;
+    },
+    toggleHighlight() {
+      class HighlighterBrush extends fabric.PencilBrush {
+        onMouseDown(pointer) {
+          this.canvas.freeDrawingBrush.color = 'rgba(255, 255, 0, 0.3)';
+          super.onMouseDown(pointer);
+        }
+      }
+      const highlighterBrush = new HighlighterBrush(canvas);
+
+      canvas.freeDrawingBrush = highlighterBrush;
+      this.highlight = !this.highlight;
+      this.pencil = false;
       this.eraser = false;
       this.square = false;
       canvas.isDrawingMode = this.pencil;
