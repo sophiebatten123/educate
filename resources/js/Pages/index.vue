@@ -8,7 +8,9 @@
         </div>
       <div>
         <div class="border-y-2 border-r-2 border-black w-full" style="height: 300px;">
-            <div class="border-l-2 border-b-2 border-black w-1/3 float-right" style="height: 100px;"></div>
+            <div class="border-l-2 border-b-2 border-black w-1/3 float-right" style="height: 100px;">
+                <webCam></webCam>
+            </div>
           </div>
           <div class="flex justify-center mt-4">
             <button class="rounded-full w-12 h-12 border-2 border-black" @click="togglePencil" :class="pencil && pencilBlack ? 'bg-gray-800 text-white' : pencil && pencilGreen ? 'bg-green-400' : pencil && pencilRed ? 'bg-red-400' : pencil && pencilBlue ? 'bg-blue-400' : ''">
@@ -59,6 +61,7 @@ import { fabric } from 'fabric';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import webCam from '@/Components/webCam.vue';
 
 // Add the solid (fas) icons to the library
 library.add(fas);
@@ -88,7 +91,8 @@ export default {
     }
   },
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
+    webCam
   },
   mounted() {
     this.initializeCanvas();
