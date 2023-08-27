@@ -5,6 +5,9 @@
       <div class="flex">
           <p v-if="pingResult !== null">Ping Result: {{ pingResult }} ms </p>
           <div class="w-5 h-5" :class="getColorClass"></div>
+          <p v-if="pingResult !== null && pingResult <= 30">Yay, your internet is quick!</p>
+          <p v-if="pingResult !== null && pingResult > 30 && pingResult <= 60">Your internet is okay.</p>
+          <p v-if="pingResult !== null && pingResult > 60">Your internet is too slow.</p>
         </div>
     </div>
   </template>
@@ -15,7 +18,7 @@
       return {
         isTesting: false,
         pingResult: null,
-        localServerUrl: 'http://127.0.0.1:8000', // Adjust the port as needed
+        localServerUrl: 'http://127.0.0.1:8000',
         intervalId: null,
       };
     },
@@ -35,10 +38,10 @@
     methods: {
       startTesting() {
         this.isTesting = true;
-        this.pingLocalServer(); // Test immediately on start
+        this.pingLocalServer();
         this.intervalId = setInterval(() => {
           this.pingLocalServer();
-        }, 1000); // Test every second
+        }, 2000); 
       },
       stopTesting() {
         this.isTesting = false;
@@ -64,8 +67,3 @@
     },
   };
   </script>
-  
-  <style scoped>
-  /* Your styles here */
-  </style>
-  
