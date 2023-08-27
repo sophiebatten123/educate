@@ -3,7 +3,7 @@
         <div>
             <button @click="toggleAudioTest">audio&nbsp;test</button>
         </div>
-        <div class="flex justify-between w-full h-30">
+        <div class="flex justify-between">
             <div v-for="(barHeight, index) in visualBars" :key="index" class="bar"
                  :style="{ height: barHeight + 'px' }"></div>
         </div>
