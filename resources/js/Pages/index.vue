@@ -10,6 +10,7 @@
         <div class="border-y-2 border-r-2 border-black w-full" style="height: 300px;">
             <div class="border-l-2 border-b-2 border-black w-1/3 float-right" style="height: 100px;">
                 <webCam></webCam>
+                <audioTest></audioTest>
             </div>
           </div>
           <div class="flex justify-center mt-4">
@@ -62,6 +63,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import webCam from '@/Components/webCam.vue';
+import audioTest from '@/Components/audioTest.vue';
 
 // Add the solid (fas) icons to the library
 library.add(fas);
@@ -92,7 +94,8 @@ export default {
   },
   components: {
     FontAwesomeIcon,
-    webCam
+    webCam,
+    audioTest
   },
   mounted() {
     this.initializeCanvas();
