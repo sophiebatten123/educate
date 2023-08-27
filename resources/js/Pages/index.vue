@@ -2,6 +2,7 @@
     <div class="font-bold underline text-3xl">
         <p class="font-bold underline text-blue-900 my-4 ml-2">Educate Whiteboard</p>
     </div>
+    <pingTest></pingTest>
     <div class="grid-cols-3 grid">
         <div class="w-full col-span-2 canvasContainer" ref="canvasContainer">
           <canvas ref="canvasRef" class="border-2 border-black"></canvas>
@@ -64,6 +65,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import webCam from '@/Components/webCam.vue';
 import audioTest from '@/Components/audioTest.vue';
+import pingTest from '@/Components/pingTest.vue';
 
 // Add the solid (fas) icons to the library
 library.add(fas);
@@ -95,7 +97,8 @@ export default {
   components: {
     FontAwesomeIcon,
     webCam,
-    audioTest
+    audioTest,
+    pingTest
   },
   mounted() {
     this.initializeCanvas();
